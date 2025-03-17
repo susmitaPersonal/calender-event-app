@@ -66,7 +66,7 @@ function App() {
   }, [selectedData]);
 
   const formatedDate = (inputDate) => {
-    console.log("inputDate", inputDate);
+    // console.log("inputDate", inputDate);
 
     const parsedDate = parse(inputDate, "dd-MM-yyyy", new Date());
 
@@ -104,7 +104,7 @@ function App() {
         }}
       >
         <div>
-          <h2>Date : {formatedDate(selectedDate)}</h2>
+          <h2>Date : {selectedDate && formatedDate(selectedDate)}</h2>
           {selectedData?.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={selectedData}>
