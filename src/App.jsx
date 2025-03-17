@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import Modal from "react-modal";
 import {
@@ -50,7 +50,7 @@ function App() {
 
     eventData = eventData.map((item) => {
       const key = Object.keys(item)[0]; // Extract the key (e.g., "user_1")
-      console.log("item[key] ::: ", item[key]);
+      // console.log("item[key] ::: ", item[key]);
       return {
         user: key,
         value: !isNaN(Number(item[key])) ? Number(item[key]) : 0,
@@ -61,9 +61,9 @@ function App() {
     setModalIsOpen(true);
   };
 
-  useEffect(() => {
-    console.log("selectedData ::: ", selectedData);
-  }, [selectedData]);
+  // useEffect(() => {
+  //   console.log("selectedData ::: ", selectedData);
+  // }, [selectedData]);
 
   const formatedDate = (inputDate) => {
     // console.log("inputDate", inputDate);
