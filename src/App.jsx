@@ -106,7 +106,7 @@ function App() {
         <div>
           <h2>Date : {selectedDate && formatedDate(selectedDate)}</h2>
           {selectedData?.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="80%" height={200}>
               <BarChart data={selectedData}>
                 <XAxis dataKey="user" />
                 <YAxis />
