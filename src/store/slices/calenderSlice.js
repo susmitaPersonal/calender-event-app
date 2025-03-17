@@ -11,7 +11,7 @@ const calendarSlice = createSlice({
   initialState,
   reducers: {
     setSelectedDate: (state, action) => {
-      state.selectedDate = action.payload;
+      state.selectedDate = action.payload; // Update the date according to selected box in calendar
     },
   },
 });
