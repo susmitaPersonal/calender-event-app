@@ -42,22 +42,38 @@ function App() {
     title: "Event",
     start: new Date(date.split("-").reverse().join("-")),
     end: new Date(date.split("-").reverse().join("-")),
+    dateKey: date,
   }));
 
   const handleSelectSlot = (slotInfo) => {
     const clickedDate = format(slotInfo.start, "dd-MM-yyyy");
-    let eventData = data[clickedDate] || [];
 
-    eventData = eventData.map((item) => {
-      const key = Object.keys(item)[0]; // Extract the key (e.g., "user_1")
-      // console.log("item[key] ::: ", item[key]);
+    if (data[clickedDate]) {
+      dispatch(setSelectedDate(clickedDate));
+      setSelectedData(mapEventData(clickedDate));
+    }
+    setModalIsOpen(true);
+  };
+
+  const mapEventData = (dateKey) => {
+    // console.log("dateKey ::: ", dateKey);
+    const eventData = data[dateKey] || [];
+
+    return eventData.map((item) => {
+      const key = Object.keys(item)[0];
+      const value = item[key];
+
       return {
         user: key,
-        value: !isNaN(Number(item[key])) ? Number(item[key]) : 0,
+        value: !isNaN(Number(value)) ? Number(value) : 0, // Handle mixed types
       };
     });
+  };
+
+  const handleSelectEvent = (event) => {
+    const clickedDate = event.dateKey; // Use dateKey from event
     dispatch(setSelectedDate(clickedDate));
-    setSelectedData(eventData);
+    setSelectedData(mapEventData(clickedDate));
     setModalIsOpen(true);
   };
 
@@ -83,6 +99,7 @@ function App() {
         style={{ height: 500 }}
         selectable={true}
         onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
       />
 
       <Modal
@@ -109,9 +126,30 @@ function App() {
             <ResponsiveContainer width="80%" height={200}>
               <BarChart data={selectedData}>
                 <XAxis dataKey="user" />
-                <YAxis />
+                <YAxis domain={["auto", "auto"]} />
                 <Tooltip />
-                <Bar dataKey="value" fill="#8884d8" />
+
+                <Bar
+                  dataKey="value"
+                  barSize={40}
+                  isAnimationActive={false}
+                  shape={(props) => {
+                    const { x, y, width, height, payload } = props;
+
+                    // Dynamically color based on value
+                    const color = payload.value >= 0 ? "#4caf50" : "#f44336"; // Green for positive, Red for negative
+
+                    return (
+                      <rect
+                        x={x}
+                        y={y}
+                        width={width}
+                        height={Math.abs(height)}
+                        fill={color}
+                      />
+                    );
+                  }}
+                />
               </BarChart>
             </ResponsiveContainer>
           ) : (
